@@ -21,6 +21,7 @@ pub fn get(var_name: &str) -> String {
 }
 
 pub fn jarvis() -> String {
+    // todo: parse URL as validation
     let jarvis_endpoint = get("jarvis");
     // No need to check for None (!jarvis_endpoint) since 'get' always returns an empty value
     if jarvis_endpoint.is_empty() {

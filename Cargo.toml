@@ -14,6 +14,10 @@ path = "src/secure.rs"
 name = "offline"
 path = "src/offline.rs"
 
+[[bin]]
+name = "signal"
+path = "src/signals.rs"
+
 [dependencies]
 reqwest = { version = "0.11.22", features = ["blocking"] }
 serde = "1.0"
