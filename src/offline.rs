@@ -10,8 +10,8 @@ mod environ;
 
 fn main() {
     // if not blocking, method should be awaited 'reqwest.await.is_ok'
-    let token = environ::get("token");
-    if token.is_empty() {
+    let offline_pass = environ::get("offline_pass");
+    if offline_pass.is_empty() {
         println!("Requires auth token set as environment variable!!");
         exit(1)
     }
@@ -24,7 +24,7 @@ fn main() {
     let json_data = format!(r#"{{"command": "{}"}}"#, command);
     let mut auth_header = String::new();
     auth_header.push_str("Bearer ");
-    auth_header.push_str(token.as_str());
+    auth_header.push_str(offline_pass.as_str());
     let client = reqwest::blocking::Client::new();
     let resp = client
         .post("https://jarvis.vigneshrao.com/offline-communicator")
