@@ -7,6 +7,10 @@ name = "health"
 path = "src/health.rs"
 
 [[bin]]
+name = "keywords"
+path = "src/keywords.rs"
+
+[[bin]]
 name = "secure"
 path = "src/secure.rs"
 
