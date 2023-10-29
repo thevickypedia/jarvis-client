@@ -6,18 +6,10 @@ use std::process::exit;
 
 use serde_json::Value;
 
-mod environ;
-
-// todo: move this to environ.rs and rename it to settings.rs
-fn is_integer(input: &str) -> bool {
-    match input.parse::<i32>() {
-        Ok(_) => true,  // Successfully parsed as an integer
-        Err(_) => false, // Failed to parse as an integer
-    }
-}
+mod settings;
 
 fn main() {
-    let request_url = format!("{}/get-signals", environ::jarvis());
+    let request_url = format!("{}/get-signals", settings::jarvis());
     let arguments: Vec<String> = env::args().collect();
     // build query params
     let mut query_params = vec![];
@@ -28,7 +20,7 @@ fn main() {
         exit(1)
     }
     if let Some(bar_count) = arguments.get(2) {
-        if is_integer(bar_count) {
+        if settings::is_integer(bar_count) {
             query_params.push(("bar_count", bar_count));
         } else {
             println!("'{}' is not an integer value", bar_count);

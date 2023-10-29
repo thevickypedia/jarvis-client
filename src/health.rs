@@ -3,10 +3,10 @@ extern crate serde_json;
 
 use serde_json::Value;
 
-mod environ;
+mod settings;
 
 fn main() {
-    let request_url = format!("{}/health", environ::jarvis());
+    let request_url = format!("{}/health", settings::jarvis());
     let resp = reqwest::blocking::get(request_url);
     if resp.is_ok() {
         if let Ok(text) = resp.unwrap().text() {

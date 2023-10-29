@@ -6,11 +6,11 @@ use std::process::exit;
 
 use serde_json::Value;
 
-mod environ;
+mod settings;
 
 fn main() {
-    let request_url = format!("{}/offline-communicator", environ::jarvis());
-    let offline_pass = environ::get("offline_pass");
+    let request_url = format!("{}/offline-communicator", settings::jarvis());
+    let offline_pass = settings::getenv("offline_pass");
     if offline_pass.is_empty() {
         println!("ERROR\n\tRequires auth token set as environment variable!!");
         exit(1)

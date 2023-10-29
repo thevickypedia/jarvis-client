@@ -6,10 +6,10 @@ use std::process::exit;
 
 use serde_json::Value;
 
-mod environ;
+mod settings;
 
 fn main() {
-    let request_url = format!("{}/secure-send", environ::jarvis());
+    let request_url = format!("{}/secure-send", settings::jarvis());
     let arguments: Vec<String> = env::args().collect();
     if arguments.len() != 2 {
         println!("ERROR\n\tOnly ONE argument (one-time usable token) is required!!");
