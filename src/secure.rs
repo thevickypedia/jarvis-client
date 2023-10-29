@@ -6,17 +6,19 @@ use std::process::exit;
 
 use serde_json::Value;
 
+mod environ;
+
 fn main() {
-    // if not blocking, method should be awaited 'reqwest.await.is_ok'
+    let request_url = format!("{}/secure-send", environ::jarvis());
     let arguments: Vec<String> = env::args().collect();
     if arguments.len() != 2 {
-        println!("Only ONE argument (one-time usable token) is required!!");
+        println!("ERROR\n\tOnly ONE argument (one-time usable token) is required!!");
         exit(1)
     }
     let token = arguments.last().unwrap().to_string();
     let client = reqwest::blocking::Client::new();
     let resp = client
-        .post("https://jarvis.vigneshrao.com/secure-send")
+        .post(request_url)
         .header("access-token", token)
         .send();
     if resp.is_ok() {
@@ -27,7 +29,7 @@ fn main() {
                 Ok(response) => {
                     if let Some(secret) = response["detail"].as_object() {
                         for (key, value) in secret.iter() {
-                            println!("Secret for '{}' is {}", key, value);
+                            println!("Secret for '{}' is '{}'", key, value);
                         }
                     } else if let Some(authed) = response["detail"].as_str() {
                         println!("{}", authed);

@@ -3,6 +3,7 @@ Module to get environment variables in a case insensitive way
 */
 
 use std::env;
+use std::process::exit;
 
 pub fn get(var_name: &str) -> String {
     // Convert the variable name to lowercase for case-insensitive comparison
@@ -17,4 +18,15 @@ pub fn get(var_name: &str) -> String {
         }
     }
     return "".to_string();
+}
+
+pub fn jarvis() -> String {
+    let jarvis_endpoint = get("jarvis");
+    // No need to check for None (!jarvis_endpoint) since 'get' always returns an empty value
+    if jarvis_endpoint.is_empty() {
+        eprintln!("ERROR\n\tJarvis endpoint is null");
+        exit(1);
+    } else {
+        return jarvis_endpoint;
+    }
 }

@@ -9,16 +9,16 @@ use serde_json::Value;
 mod environ;
 
 fn main() {
-    // if not blocking, method should be awaited 'reqwest.await.is_ok'
+    let request_url = format!("{}/offline-communicator", environ::jarvis());
     let offline_pass = environ::get("offline_pass");
     if offline_pass.is_empty() {
-        println!("Requires auth token set as environment variable!!");
+        println!("ERROR\n\tRequires auth token set as environment variable!!");
         exit(1)
     }
     let command = env::args().last().unwrap().to_string();
     // If no args were passed, default will be last
     if command == env::args().next().unwrap().as_str() {
-        println!("Requires a command as argument");
+        println!("ERROR\n\tRequires a command as argument");
         exit(1)
     }
     let json_data = format!(r#"{{"command": "{}"}}"#, command);
@@ -27,7 +27,7 @@ fn main() {
     auth_header.push_str(offline_pass.as_str());
     let client = reqwest::blocking::Client::new();
     let resp = client
-        .post("https://jarvis.vigneshrao.com/offline-communicator")
+        .post(request_url)
         .header("Authorization", auth_header)
         .body(json_data)
         .send();
