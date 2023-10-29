@@ -34,12 +34,13 @@ pub fn jarvis() -> String {
     } else {
         match parser::parse_url(&jarvis_endpoint) {
             Ok(parsed) => {
-                println!("{:?}", parsed);
                 let path = parsed.get(3).unwrap().as_str();
                 if path != "/" {
-                    println!("Path {} is invalid", path);
-                    exit(1)
-                } // todo: build new URL instead of exiting
+                    println!("WARNING\n\tpath ['{}'] should never be specified, overriding..", path);
+                    return format!("{}://{}",
+                                   parsed.get(0).unwrap().as_str(),
+                                   parsed.get(1).unwrap().as_str());
+                }
                 println!("URL OK: {}", jarvis_endpoint);
                 return jarvis_endpoint;
             }
