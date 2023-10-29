@@ -6,6 +6,10 @@ version = "0.0.1"
 name = "health"
 path = "src/health.rs"
 
+[[bin]]
+name = "secure"
+path = "src/secure.rs"
+
 [dependencies]
 reqwest = { version = "0.11.22", features = ["blocking"] }
 serde = "1.0"
