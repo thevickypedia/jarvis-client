@@ -5,6 +5,8 @@ Module to get environment variables in a case insensitive way
 use std::env;
 use std::process::exit;
 
+mod parser;
+
 pub fn getenv(var_name: &str) -> String {
     // Convert the variable name to lowercase for case-insensitive comparison
     let var_name_lowercase = var_name.to_lowercase();
@@ -24,14 +26,28 @@ pub fn getenv(var_name: &str) -> String {
 // when building modules that don't use this function
 #[allow(dead_code)]
 pub fn jarvis() -> String {
-    // todo: parse URL as validation
     let jarvis_endpoint = getenv("jarvis");
     // No need to check for None (!jarvis_endpoint) since 'get' always returns an empty value
     if jarvis_endpoint.is_empty() {
         eprintln!("ERROR\n\tJarvis endpoint is null");
         exit(1);
     } else {
-        return jarvis_endpoint;
+        match parser::parse_url(&jarvis_endpoint) {
+            Ok(parsed) => {
+                println!("{:?}", parsed);
+                let path = parsed.get(3).unwrap().as_str();
+                if path != "/" {
+                    println!("Path {} is invalid", path);
+                    exit(1)
+                } // todo: build new URL instead of exiting
+                println!("URL OK: {}", jarvis_endpoint);
+                return jarvis_endpoint;
+            }
+            Err(error) => {
+                println!("Error: {}", error); // Handle error
+                exit(1)
+            }
+        }
     }
 }
 
